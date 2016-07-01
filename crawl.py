@@ -1,5 +1,3 @@
-#coding=utf-8
-
 import requests
 from bs4 import BeautifulSoup
 import lxml
@@ -15,10 +13,7 @@ soup = BeautifulSoup(res.text,'lxml')
 #print(soup.encode(sys.stdin.encoding, "replace").decode(sys.stdin.encoding)) 
 
 #使用select選取特定元素
-hrefs = soup.select('a')
-
+text = soup.select('q_m_title01')
 
 #印出
-for href in hrefs :
-	text=str(href)
-	print(text.encode(sys.stdin.encoding, "replace").decode(sys.stdin.encoding))
+print(text.encode(sys.stdin.encoding, "replace").decode(sys.stdin.encoding))
