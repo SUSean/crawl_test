@@ -11,24 +11,34 @@ def printHtml(tag) :
 
 def saveImg(tag,dirName) :
 	num = 1
-	if not os.path.exists(dirName) :
-		os.mkdir(dirName)
+	error_num = 0
+	if not os.path.exists('pictures\\'+dirName) :
+		try:
+			os.mkdir('pictures\\'+dirName)
+		except OSError :
+			while True :
+				error_num = error_num+1
+				dirName = 'errorName'+str(error_num)
+				if not os.path.exists('pictures\\'+dirName) :
+					os.mkdir('pictures\\'+dirName)
+					break
 	for item in tag :
 		if(item.get('file')) :
 			url=item.get('file')
 		else :
-			uel=item.get('src')
+			url=item.get('src')
 		print(url)
-		with open(dirName+'\\'+str(num)+'.jpg','wb') as f:
+		with open('pictures\\'+dirName+'\\'+str(num)+'.jpg','wb') as f:
 			r = requests.get(url)
 			f.write(r.content)
 			num=num+1
 
+
 url = input('請輸入URL：')
-payload = {'answer':'','formhash':'beba44d9','loginsubmit':'true','password':'080000','questionid':'0','referer':'http://oursogo.com/','username':'SUSean'}
+payload = {'answer':'','loginsubmit':'true','password':'080000','questionid':'0','username':'SUSean'}
 s=requests.session()
-s.post(url='http://oursogo.com/member.php?mod=logging&action=login&loginsubmit=yes&handlekey=login&loginhash=LLb3D&inajax=1'
-	,data=payload)
+res=s.post(url='http://oursogo.com/member.php?mod=logging&action=login',data=payload)
+
 #送出GET請求到遠端伺服器，伺服器接受請求後回傳<Response [200]>，代表請求成功
 #payload = {'w': 'test'}
 #res = requests.post("http://yun.dreye.com/dict_new/dict.php", data=payload)
@@ -47,6 +57,4 @@ name = tag[0].text
 tag = soup.select('ignore_js_op img')
 saveImg(tag,name)
 tag = soup.select('.vwmy')
-printHtml(tag)
-tag = soup.select('#thread_subject')
 printHtml(tag)
