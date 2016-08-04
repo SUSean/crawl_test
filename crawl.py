@@ -24,8 +24,6 @@ def saveImg(tag,dirName) :
 			f.write(r.content)
 			num=num+1
 
-
-
 url = input('請輸入URL：')
 payload = {'answer':'','formhash':'beba44d9','loginsubmit':'true','password':'080000','questionid':'0','referer':'http://oursogo.com/','username':'SUSean'}
 s=requests.session()
