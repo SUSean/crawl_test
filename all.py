@@ -9,6 +9,8 @@ def getUrls(tag) :
 	url = []
 	for item in tag :
 		id = item.get('id')
+		if id == None :
+			continue
 		if id[:12] == "normalthread":
 			url.append("http://oursogo.com/thread"+"-"+id[13:]+"-1-1.html")
 	return url
@@ -38,19 +40,26 @@ def saveImg(tag,dirName) :
 		else :
 			url=item.get('src')
 		print(url)
+		if url == "http://static.oursogo.com/image/common/rleft.gif" or  url == "http://static.oursogo.com/image/common/rright.gif":
+			continue
 		with open('pictures\\'+dirName+'\\'+str(num)+'.jpg','wb') as f:
 			r = requests.get(url)
 			f.write(r.content)
 			num=num+1
 
 #送出GET請求到遠端伺服器，伺服器接受請求後回傳<Response [200]>，代表請求成功
-res = requests.get("http://oursogo.com/forum.php?mod=forumdisplay&fid=276&orderby=&page=1")
+#payload = {'answer':'','loginsubmit':'true','password':'080000','questionid':'0','username':'SUSean'}
+s=requests.session()
+#res=s.post(url='http://oursogo.com/member.php?mod=logging&action=login',data=payload)
+
+res = s.get("http://oursogo.com/forum.php?mod=forumdisplay&fid=276&page=1")
 #經過BeautifulSoup內lxml編輯器解析的結果
 soup = BeautifulSoup(res.text,'lxml')
+
 tag = soup.select('tbody')
 urls = getUrls(tag)
 for url in urls :
-	res = requests.get(url)
+	res = s.get(url)
 	soup = BeautifulSoup(res.text,'lxml')
 	tag = soup.select('#thread_subject')
 	printHtml(tag)

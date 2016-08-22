@@ -28,7 +28,7 @@ def saveImg(tag,dirName) :
 		else :
 			url=item.get('src')
 		print(url)
-		with open('pictures\\'+dirName+'\\'+str(num)+'.jpg','wb') as f:
+		with open('pictures\\'+dirName+'\\'+str(num).zfill(3)+'.jpg','wb') as f:
 			r = requests.get(url)
 			f.write(r.content)
 			num=num+1
@@ -55,6 +55,7 @@ tag = soup.select('#thread_subject')
 printHtml(tag)
 name = tag[0].text
 tag = soup.select('ignore_js_op img')
+tag = tag+soup.select('.showhide a img')
 saveImg(tag,name)
 tag = soup.select('.vwmy')
 printHtml(tag)
