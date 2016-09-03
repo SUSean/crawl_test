@@ -45,21 +45,20 @@ def saveImg(tag,dirName) :
 
 s=requests.session()
 #res=s.post(url='http://oursogo.com/member.php?mod=logging&action=login',data=payload)
-for i in range(1, 35, 1):
-	res = s.get("http://colapic.com/category/meinv/page/"+str(i))
+res = s.get("http://colapic.com/category/meinv/")
 
-	#經過BeautifulSoup內lxml編輯器解析的結果
+#經過BeautifulSoup內lxml編輯器解析的結果
+soup = BeautifulSoup(res.text,'lxml')
+
+tag = soup.select('.excerpt h2 a')
+urls = getUrls(tag)
+for url in urls :
+	res = s.get(url)
 	soup = BeautifulSoup(res.text,'lxml')
-
-	tag = soup.select('.excerpt h2 a')
-	urls = getUrls(tag)
-	for url in urls :
-		res = s.get(url)
-		soup = BeautifulSoup(res.text,'lxml')
-		tag = soup.select('.article-title')
-		printHtml(tag)
-		name = tag[0].text
-		tag = soup.select('.article-content img')
-		saveImg(tag,name)
+	tag = soup.select('.article-title')
+	printHtml(tag)
+	name = tag[0].text
+	tag = soup.select('.article-content img')
+	saveImg(tag,name)
 
 
