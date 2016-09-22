@@ -40,9 +40,6 @@ s=requests.session()
 res=s.post(url='http://oursogo.com/member.php?mod=logging&action=login',data=payload)
 
 #送出GET請求到遠端伺服器，伺服器接受請求後回傳<Response [200]>，代表請求成功
-#payload = {'w': 'test'}
-#res = requests.post("http://yun.dreye.com/dict_new/dict.php", data=payload)
-#res = requests.get("http://yun.dreye.com/dict_new/dict.php", params=payload)
 res = s.get(url)
 #經過BeautifulSoup內lxml編輯器解析的結果
 soup = BeautifulSoup(res.text,'lxml')
